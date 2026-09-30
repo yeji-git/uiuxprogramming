@@ -3,24 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>게임 수집가 | 스팀 게임 추천 & 서재 관리</title>
+    <title>게임 수집가 | Re:hear 스타일</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- UX 계획
-    사용자: 취향에 맞는 게임을 찾고 내 라이브러리를 관리하고 싶은 게이머
-    목적: 원하는 장르의 게임을 추천받고, 현재 소장 중인 게임 및 플레이 현황을 관리한다.
-    핵심 행동: 추천 장르를 선택하고, 서재 필터를 활용하며, 소식 알림을 신청한다.
-    정보 순서: 추천 받아보기 → 내 서재 현황 → 내 게임 서재 → 서비스 기능 → 이용 방법 → 소식 받기 -->
-
-    <header class="site-header">
+    <header>
       <p class="eyebrow">STEAM GAME COLLECTOR</p>
       <h1>게임 수집가</h1>
       <p class="header-description">
         당신의 취향에 맞는 스팀 게임을 추천하고 서재를 관리해 드립니다.
       </p>
 
-      <nav class="site-nav" aria-label="주요 메뉴">
+      <nav aria-label="주요 메뉴">
         <a href="#recommend">오늘의 추천</a>
         <a href="#stats">서재 현황</a>
         <a href="#library">내 게임 서재</a>
@@ -32,7 +33,7 @@
 
     <main>
       <!-- 1. 오늘의 추천 섹션 -->
-      <section id="recommend" class="content-section">
+      <section id="recommend">
         <h2>오늘의 추천 받아보기</h2>
         <div class="about-layout">
           <div class="about-text">
@@ -44,36 +45,20 @@
             <form class="recommend-form">
               <fieldset>
                 <legend>장르 선택</legend>
-
                 <label class="chip-label">
                   <input type="checkbox" name="genre" value="rpg" />
                   <span>RPG</span>
                 </label>
-
                 <label class="chip-label">
                   <input type="checkbox" name="genre" value="action" />
                   <span>액션</span>
                 </label>
-
                 <label class="chip-label">
                   <input type="checkbox" name="genre" value="simulation" />
                   <span>시뮬레이션</span>
                 </label>
-
-                <label class="chip-label">
-                  <input type="checkbox" name="genre" value="strategy" />
-                  <span>전략</span>
-                </label>
-
-                <label class="chip-label">
-                  <input type="checkbox" name="genre" value="indie" />
-                  <span>인디</span>
-                </label>
               </fieldset>
-
-              <button class="primary-button" type="submit">
-                추천 게임 보기
-              </button>
+              <button type="submit">추천 게임 보기</button>
             </form>
           </div>
 
@@ -81,15 +66,15 @@
             <h3>오늘의 픽</h3>
             <img
               class="service-image"
-              src="assets/images/stardew_valley.jpg"
-              alt="오늘의 추천 게임 대표 이미지"
+              src="assets/images/service.jpg"
+              alt="추천 게임 대표 이미지"
             />
           </aside>
         </div>
       </section>
 
       <!-- 2. 내 서재 현황 섹션 -->
-      <section id="stats" class="content-section">
+      <section id="stats">
         <h2>내 서재 현황</h2>
         <ul class="stats-grid">
           <li class="stat-card">
@@ -105,54 +90,34 @@
             <strong>42개</strong>
           </li>
         </ul>
-        <p class="stats-summary">이번 달에 2개의 새로운 게임을 완결했습니다!</p>
       </section>
 
       <!-- 3. 내 게임 서재 섹션 -->
-      <section id="library" class="content-section">
+      <section id="library">
         <h2>내 게임 서재</h2>
-        <div class="filter-wrapper">
-          <label for="sort-select">정렬 기준</label>
-          <select id="sort-select" class="select-field">
-            <option value="recent">최근 추가순</option>
-            <option value="playtime">플레이 시간순</option>
-            <option value="rating">평점순</option>
-          </select>
-        </div>
-
-        <ul class="library-grid">
-          <li class="game-card">
-            <article>
-              <h3>스타듀 밸리</h3>
-              <p>장르: 시뮬레이션 / 인디</p>
-              <p class="status">상태: <span>플레이 중</span></p>
-            </article>
+        <ul class="features-list">
+          <li class="feature-card">
+            <h3>스타듀 밸리</h3>
+            <p>장르: 시뮬레이션 / 인디</p>
+            <p class="status">상태: <span>플레이 중</span></p>
           </li>
-          <li class="game-card">
-            <article>
-              <h3>하데스</h3>
-              <p>장르: 액션 / 로그라이크</p>
-              <p class="status">상태: <span>완결</span></p>
-            </article>
+          <li class="feature-card">
+            <h3>하데스</h3>
+            <p>장르: 액션 / 로그라이크</p>
+            <p class="status">상태: <span>완결</span></p>
           </li>
-          <li class="game-card">
-            <article>
-              <h3>발더스 게이트 3</h3>
-              <p>장르: RPG</p>
-              <p class="status">상태: <span>플레이 중</span></p>
-            </article>
+          <li class="feature-card">
+            <h3>발더스 게이트 3</h3>
+            <p>장르: RPG</p>
+            <p class="status">상태: <span>플레이 중</span></p>
           </li>
         </ul>
-
-        <div class="action-wrapper">
-          <button class="secondary-button" type="button">게임 더보기</button>
-        </div>
       </section>
 
       <!-- 4. 주요 기능 섹션 -->
-      <section id="features" class="content-section">
+      <section id="features">
         <h2>주요 기능</h2>
-        <ul class="feature-list">
+        <ul class="features-list">
           <li class="feature-card">
             <h3>맞춤형 게임 추천</h3>
             <p>
@@ -175,41 +140,26 @@
         </ul>
       </section>
 
-      <!-- 5. 이용 방법 섹션 -->
-      <section id="steps" class="content-section">
-        <h2>이용 방법</h2>
-        <ol class="steps-list">
-          <li>선호하는 게임 장르와 키워드를 선택합니다.</li>
-          <li>추천된 게임 중 마음에 드는 게임을 서재에 추가합니다.</li>
-          <li>플레이 상태를 기록하며 나만의 게임 컬렉션을 완성합니다.</li>
-        </ol>
-      </section>
-
-      <!-- 6. 소식 받기 섹션 -->
-      <section id="subscribe" class="content-section subscribe-section">
+      <!-- 5. 소식 받기 섹션 -->
+      <section id="subscribe">
         <h2>스팀 할인 소식 받기</h2>
         <p>
           자주 확인하는 이메일을 입력하면 위시리스트 할인 및 추천 소식을
           보내드립니다.
         </p>
-        <form class="subscribe-form">
-          <label class="email-field" for="email">
-            이메일
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="name@example.com"
-            />
-          </label>
-          <button class="primary-button" type="submit">
-            할인 알림 신청하기
-          </button>
+        <form>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="name@example.com"
+          />
+          <button type="submit">할인 알림 신청하기</button>
         </form>
       </section>
     </main>
 
-    <footer class="site-footer">
+    <footer>
       <p>© 2026 게임 수집가 (Steam Game Collector)</p>
     </footer>
   </body>
