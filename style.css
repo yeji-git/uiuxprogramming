@@ -205,7 +205,7 @@ footer {
 }
 
 /* ==========================================================================
-   6. 768px 미디어 쿼리 (유일한 1개의 미디어 쿼리)
+   6. 768px 미디어 쿼리
    ========================================================================== */
 @media (max-width: 768px) {
   body {
@@ -230,8 +230,16 @@ footer {
     font-size: 28px;
   }
 
+  /* ✨ 피드백 반영: align-items를 stretch로 변경 */
   .about-layout {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* ✨ 피드백 반영: 미리보기 및 이미지 너비 제어 */
+  .recommend-preview {
+    width: 100%;
+    max-width: 100%;
   }
 
   nav {

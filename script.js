@@ -15,6 +15,7 @@ let isSaved = false;
 // 3. JavaScript가 바꿀 요소를 id로 찾습니다.
 const saveMessage = document.querySelector("#saveMessage");
 const saveButton = document.querySelector("#saveButton");
+const emailInput = document.querySelector("#email"); // ✨ 이메일 입력창 요소 추가
 
 // 4. 상태에 맞는 문구를 반환합니다.
 function makeSaveMessage(saved) {
@@ -26,6 +27,22 @@ function makeSaveMessage(saved) {
 
 // 5. 클릭 순간 실행할 동작입니다.
 function saveSettings() {
+  const emailValue = emailInput.value.trim();
+
+  // 5-1. 빈 값 및 이메일 형식 유효성 검사
+  if (emailValue === "") {
+    alert("이메일 주소를 입력해 주세요.");
+    emailInput.focus();
+    return;
+  }
+
+  if (!emailInput.checkValidity()) {
+    alert("올바른 이메일 형식을 입력해 주세요. (예: name@example.com)");
+    emailInput.focus();
+    return;
+  }
+
+  // 5-2. 유효성 검사 통과 시 저장 완료 처리
   isSaved = true;
   saveMessage.textContent = makeSaveMessage(isSaved);
   saveMessage.classList.add("is-saved");
