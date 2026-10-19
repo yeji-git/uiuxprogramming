@@ -52,3 +52,80 @@ function saveSettings() {
 
 // 6. click 이벤트와 함수를 연결합니다.
 saveButton.addEventListener("click", saveSettings);
+
+// 6주차 : 서비스 이용 설정의 요소 선택
+const themeButton = document.querySelector("#themeButton");
+const userNameInput = document.querySelector("#userName");
+const userNameCount = document.querySelector("#userNameCount");
+const agreeCheck = document.querySelector("#agreeCheck");
+const agreeMessage = document.querySelector("#agreeMessage");
+const startButton = document.querySelector("#startButton");
+
+// click으로 테마와 버튼 문구 전환
+function handleThemeClick() {
+  const isDark = document.body.classList.toggle("dark");
+
+  themeButton.textContent = isDark
+    ? "밝은 테마로 바꾸기"
+    : "어두운 테마로 바꾸기";
+}
+
+themeButton.addEventListener("click", handleThemeClick);
+
+// input으로 현재 글자 수 표시
+function handleUserNameInput() {
+  const currentLength = userNameInput.value.length;
+  userNameCount.textContent = currentLength + " / 10";
+}
+
+userNameInput.addEventListener("input", handleUserNameInput);
+
+// change로 안내 문구와 버튼 상태 변경
+function handleAgreeChange() {
+  const agreed = agreeCheck.checked;
+
+  startButton.disabled = !agreed;
+  agreeMessage.textContent = agreed
+    ? "확인이 완료되었습니다. 서비스를 시작할 수 있습니다."
+    : "안내 확인 후 서비스를 시작할 수 있습니다.";
+
+  agreeMessage.classList.toggle("is-ready", agreed);
+}
+
+agreeCheck.addEventListener("change", handleAgreeChange);
+
+// 탭 UI 동적 기능 구현
+const tabs = document.querySelectorAll(".tab");
+const panels = document.querySelectorAll(".panel");
+
+function resetTabsAndPanels() {
+  tabs.forEach(function (tab) {
+    tab.classList.remove("is-active");
+    tab.setAttribute("aria-selected", "false");
+  });
+
+  panels.forEach(function (panel) {
+    panel.classList.remove("is-active");
+    panel.hidden = true;
+  });
+}
+
+function activateTab(clickedTab) {
+  const targetSelector = clickedTab.dataset.target;
+  const targetPanel = document.querySelector(targetSelector);
+
+  clickedTab.classList.add("is-active");
+  clickedTab.setAttribute("aria-selected", "true");
+
+  targetPanel.classList.add("is-active");
+  targetPanel.hidden = false;
+}
+
+function handleTabClick(event) {
+  resetTabsAndPanels();
+  activateTab(event.currentTarget);
+}
+
+tabs.forEach(function (tab) {
+  tab.addEventListener("click", handleTabClick);
+});
