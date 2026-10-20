@@ -92,24 +92,36 @@
         </ul>
       </section>
 
-      <!-- 3. 내 게임 서재 섹션 -->
+      <!-- 3. 내 게임 서재 섹션 (사용자 흐름과 인터랙션 시나리오 추가) -->
       <section id="library">
         <h2>내 게임 서재</h2>
+        <p id="libraryMessage" aria-live="polite">
+          카드의 상태 변경 버튼을 눌러 플레이 기록을 업데이트해 보세요.
+        </p>
         <ul class="features-list">
           <li class="feature-card">
             <h3>스타듀 밸리</h3>
             <p>장르: 시뮬레이션 / 인디</p>
-            <p class="status">상태: <span>플레이 중</span></p>
+            <p class="status">
+              상태: <span class="status-text">플레이 중</span>
+            </p>
+            <button type="button" class="status-btn">상태 변경 (완결)</button>
           </li>
-          <li class="feature-card">
+          <li class="feature-card is-completed">
             <h3>하데스</h3>
             <p>장르: 액션 / 로그라이크</p>
-            <p class="status">상태: <span>완결</span></p>
+            <p class="status">상태: <span class="status-text">완결</span></p>
+            <button type="button" class="status-btn">
+              상태 변경 (플레이 중)
+            </button>
           </li>
           <li class="feature-card">
             <h3>발더스 게이트 3</h3>
             <p>장르: RPG</p>
-            <p class="status">상태: <span>플레이 중</span></p>
+            <p class="status">
+              상태: <span class="status-text">플레이 중</span>
+            </p>
+            <button type="button" class="status-btn">상태 변경 (완결)</button>
           </li>
         </ul>
       </section>
@@ -238,7 +250,7 @@
         <div class="interaction-item">
           <label class="agree-row" for="agreeCheck">
             <input id="agreeCheck" type="checkbox" />
-            서비스 이용 안내를 확인했습니다.
+            <span>서비스 이용 안내를 확인했습니다.</span>
           </label>
 
           <p id="agreeMessage" aria-live="polite">

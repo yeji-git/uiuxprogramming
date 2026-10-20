@@ -129,3 +129,30 @@ function handleTabClick(event) {
 tabs.forEach(function (tab) {
   tab.addEventListener("click", handleTabClick);
 });
+
+// 내 서재 상태 변경 및 기록 (Interactive Status Update)
+const statusButtons = document.querySelectorAll(".status-btn");
+const libraryMessage = document.querySelector("#libraryMessage");
+
+function handleStatusChange(event) {
+  const card = event.currentTarget.closest(".feature-card");
+  const statusTextSpan = card.querySelector(".status-text");
+  const gameTitle = card.querySelector("h3").textContent;
+
+  // 클래스 토글을 통해 '완결' 상태 시각적 스타일 변경
+  const isCompleted = card.classList.toggle("is-completed");
+
+  if (isCompleted) {
+    statusTextSpan.textContent = "완결";
+    event.currentTarget.textContent = "상태 변경 (플레이 중)";
+    libraryMessage.textContent = `'${gameTitle}' 게임이 [완결] 상태로 업데이트되었습니다!`;
+  } else {
+    statusTextSpan.textContent = "플레이 중";
+    event.currentTarget.textContent = "상태 변경 (완결)";
+    libraryMessage.textContent = `'${gameTitle}' 게임이 [플레이 중] 상태로 변경되었습니다.`;
+  }
+}
+
+statusButtons.forEach(function (button) {
+  button.addEventListener("click", handleStatusChange);
+});
