@@ -458,6 +458,34 @@ body.dark .panel {
   background-color: #2d2e38;
 }
 
+/* 중간고사: 게임 직접 추가 */
+#add-game-section {
+  margin-top: 40px;
+  background-color: #fcfcff;
+  border: 2px dashed #5b50c8;
+}
+
+#addGameForm {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+#addGameMessage {
+  color: #5b50c8;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+#addGameMessage.is-success {
+  color: #245c3a;
+  background-color: #e7f7ed;
+  padding: 12px;
+  border-radius: 10px;
+}
+
 /* 768px 미디어 쿼리 */
 @media (max-width: 768px) {
   body {
@@ -552,5 +580,10 @@ body.dark .panel {
   .tab {
     width: 100%;
     text-align: left;
+  }
+
+  #addGameForm {
+    flex-direction: column;
+    align-items: stretch;
   }
 }

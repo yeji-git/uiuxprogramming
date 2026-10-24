@@ -126,6 +126,38 @@
         </ul>
       </section>
 
+      <!-- 새 게임 서재 직접 추가 (중간고사) -->
+      <section id="add-game-section">
+        <h2>내 서재에 게임 직접 추가하기</h2>
+        <p id="addGameMessage">
+          새로 플레이하거나 보유한 스팀 게임을 서재에 직접 등록해 보세요.
+        </p>
+
+        <form id="addGameForm" onsubmit="return false;">
+          <div style="flex: 2; display: flex; flex-direction: column; gap: 8px">
+            <label for="newGameTitle" style="font-weight: 700">게임 제목</label>
+            <input
+              type="text"
+              id="newGameTitle"
+              placeholder="예: 엘든링, 몬스터 헌터"
+              maxlength="30"
+            />
+          </div>
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+            <label for="newGameGenre" style="font-weight: 700">장르</label>
+            <input
+              type="text"
+              id="newGameGenre"
+              placeholder="예: 액션 / RPG"
+              maxlength="20"
+            />
+          </div>
+          <div style="display: flex; align-items: flex-end">
+            <button id="addGameButton" type="button">서재에 추가</button>
+          </div>
+        </form>
+      </section>
+
       <!-- 4. 주요 기능 섹션 (탭 UI 적용) -->
       <section id="features">
         <h2>주요 기능</h2>
