@@ -87,7 +87,7 @@ img {
   cursor: not-allowed;
 }
 
-/* 1. 기본 레이아웃 및 너비 제어 (1100px, 769px, 390px 자동 대응) */
+/* 기본 레이아웃 및 너비 제어 */
 header,
 main,
 footer {
@@ -161,7 +161,7 @@ nav a:hover {
   background-color: #ebe9ff;
 }
 
-/* 3. 섹션 레이아웃 */
+/* 섹션 레이아웃 */
 section {
   margin-bottom: 24px;
   padding: 40px;
@@ -187,7 +187,7 @@ section {
   border-radius: 14px;
 }
 
-/* 4. 자동 Grid (flex-wrap 제거됨, auto-fit 적용) */
+/* 자동 Grid */
 .features-list,
 .stats-grid {
   list-style-type: none;
@@ -219,7 +219,7 @@ section {
   color: #5b50c8;
 }
 
-/* 서재 상태 변경 스타일 (시나리오 2) */
+/* 서재 상태 변경 스타일 */
 #libraryMessage {
   margin-bottom: 16px;
   color: #5b50c8;
@@ -253,7 +253,7 @@ section {
   font-weight: 700;
 }
 
-/* 5. 폼 스타일 */
+/* 폼 스타일 */
 form {
   display: flex;
   gap: 12px;
@@ -265,7 +265,8 @@ button {
   border-radius: 8px;
 }
 
-input[type="email"] {
+input[type="email"],
+input[type="text"] {
   padding: 12px 14px;
   border: 1px solid #bfc1d1;
 }
@@ -286,13 +287,11 @@ footer {
   font-size: 14px;
 }
 
-/* 저장 전 안내 문구 */
 #saveMessage {
   margin-top: 16px;
   color: #555763;
 }
 
-/* JavaScript가 is-saved를 추가하면 완료 상태가 보입니다. */
 #saveMessage.is-saved {
   color: #245c3a;
   background-color: #e7f7ed;
@@ -301,67 +300,13 @@ footer {
   font-weight: 700;
 }
 
-/* 저장 뒤 버튼을 비활성화합니다. */
 #saveButton:disabled {
   color: #ffffff;
   background-color: #a8a8b2;
   cursor: not-allowed;
 }
 
-/* 6주차 : 서비스 이용 설정 */
-#interaction-practice {
-  margin-top: 56px;
-}
-
-.interaction-item {
-  margin-top: 20px;
-  padding: 24px;
-  border: 1px solid #deddea;
-  border-radius: 12px;
-  background-color: #ffffff;
-}
-
-.interaction-item label:not(.agree-row) {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 700;
-}
-
-.interaction-item input[type="text"] {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.agree-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.agree-row input {
-  flex: 0 0 auto;
-  margin-top: 6px;
-}
-
-#agreeMessage {
-  padding: 12px;
-  border-radius: 10px;
-  background-color: #ecebf2;
-}
-
-#agreeMessage.is-ready {
-  color: #245c3a;
-  background-color: #e7f7ed;
-  font-weight: 700;
-}
-
-#startButton:disabled {
-  color: #ffffff;
-  background-color: #a8a8b2;
-  cursor: not-allowed;
-}
-
-/* click으로 테마와 버튼 문구 전환 */
+/* 다크모드 지원 */
 body.dark {
   color: #f4f4f8;
   background-color: #20212a;
@@ -434,7 +379,6 @@ body.dark .feature-card.is-completed .status span {
   display: none;
 }
 
-/* 다크모드 지원 (body.dark 일 때 탭 및 패널 색상) */
 body.dark .tab {
   color: #d8d8e2;
   background-color: #2d2e38;
@@ -458,7 +402,7 @@ body.dark .panel {
   background-color: #2d2e38;
 }
 
-/* 중간고사: 게임 직접 추가 */
+/* 게임 직접 추가 섹션 스타일 */
 #add-game-section {
   margin-top: 40px;
   background-color: #fcfcff;
@@ -479,11 +423,42 @@ body.dark .panel {
   margin-bottom: 8px;
 }
 
-#addGameMessage.is-success {
-  color: #245c3a;
-  background-color: #e7f7ed;
-  padding: 12px;
-  border-radius: 10px;
+/* 9주차 입력 상태 및 오류 디자인 */
+.field-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.field-meta p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #747786;
+}
+
+.field-error {
+  min-height: 20px;
+  margin: 4px 0 0;
+  color: #e53935;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.field.is-valid input {
+  border-color: #16805d;
+}
+
+.field.is-valid #title-help {
+  color: #116448;
+}
+
+.field.has-error input {
+  border-color: #e53935;
+}
+
+#addGameForm[aria-busy="true"] {
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 /* 768px 미디어 쿼리 */
@@ -510,13 +485,11 @@ body.dark .panel {
     font-size: 28px;
   }
 
-  /* ✨ 피드백 반영: align-items를 stretch로 변경 */
   .about-layout {
     flex-direction: column;
     align-items: stretch;
   }
 
-  /* ✨ 피드백 반영: 미리보기 및 이미지 너비 제어 */
   .recommend-preview {
     width: 100%;
     max-width: 100%;

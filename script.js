@@ -1,23 +1,12 @@
-// 파일이 실행되는지 확인하는 임시 로그입니다.
-// console.log("JavaScript가 연결되었습니다.");
-
-// 찾은 버튼 객체를 확인합니다.
-// console.log(saveButton);
-
-// 1. 변하지 않는 값은 const로 저장합니다.
-const panelTitle = "알림 설정";
-
-// 2. 저장 전후로 바뀌는 상태는 let으로 저장합니다.
+// ==========================================
+// 할인 이메일 저장 설정
+// ==========================================
 let isSaved = false;
 
-// console.log("isSaved 변수의 자료형:", typeof isSaved);
-
-// 3. JavaScript가 바꿀 요소를 id로 찾습니다.
 const saveMessage = document.querySelector("#saveMessage");
 const saveButton = document.querySelector("#saveButton");
-const emailInput = document.querySelector("#email"); // ✨ 이메일 입력창 요소 추가
+const emailInput = document.querySelector("#email");
 
-// 4. 상태에 맞는 문구를 반환합니다.
 function makeSaveMessage(saved) {
   if (saved === true) {
     return "알림 설정이 저장되었습니다.";
@@ -25,11 +14,9 @@ function makeSaveMessage(saved) {
   return "알림 설정을 저장해 주세요.";
 }
 
-// 5. 클릭 순간 실행할 동작입니다.
 function saveSettings() {
   const emailValue = emailInput.value.trim();
 
-  // 5-1. 빈 값 및 이메일 형식 유효성 검사
   if (emailValue === "") {
     alert("이메일 주소를 입력해 주세요.");
     emailInput.focus();
@@ -42,7 +29,6 @@ function saveSettings() {
     return;
   }
 
-  // 5-2. 유효성 검사 통과 시 저장 완료 처리
   isSaved = true;
   saveMessage.textContent = makeSaveMessage(isSaved);
   saveMessage.classList.add("is-saved");
@@ -50,10 +36,13 @@ function saveSettings() {
   saveButton.disabled = true;
 }
 
-// 6. click 이벤트와 함수를 연결합니다.
-saveButton.addEventListener("click", saveSettings);
+if (saveButton) {
+  saveButton.addEventListener("click", saveSettings);
+}
 
-// 6주차 : 서비스 이용 설정의 요소 선택
+// ==========================================
+// 서비스 이용 설정 (테마, 글자 수, 동의 체크)
+// ==========================================
 const themeButton = document.querySelector("#themeButton");
 const userNameInput = document.querySelector("#userName");
 const userNameCount = document.querySelector("#userNameCount");
@@ -61,26 +50,26 @@ const agreeCheck = document.querySelector("#agreeCheck");
 const agreeMessage = document.querySelector("#agreeMessage");
 const startButton = document.querySelector("#startButton");
 
-// click으로 테마와 버튼 문구 전환
 function handleThemeClick() {
   const isDark = document.body.classList.toggle("dark");
-
   themeButton.textContent = isDark
     ? "밝은 테마로 바꾸기"
     : "어두운 테마로 바꾸기";
 }
 
-themeButton.addEventListener("click", handleThemeClick);
+if (themeButton) {
+  themeButton.addEventListener("click", handleThemeClick);
+}
 
-// input으로 현재 글자 수 표시
 function handleUserNameInput() {
   const currentLength = userNameInput.value.length;
   userNameCount.textContent = currentLength + " / 10";
 }
 
-userNameInput.addEventListener("input", handleUserNameInput);
+if (userNameInput) {
+  userNameInput.addEventListener("input", handleUserNameInput);
+}
 
-// change로 안내 문구와 버튼 상태 변경
 function handleAgreeChange() {
   const agreed = agreeCheck.checked;
 
@@ -92,9 +81,13 @@ function handleAgreeChange() {
   agreeMessage.classList.toggle("is-ready", agreed);
 }
 
-agreeCheck.addEventListener("change", handleAgreeChange);
+if (agreeCheck) {
+  agreeCheck.addEventListener("change", handleAgreeChange);
+}
 
+// ==========================================
 // 탭 UI 동적 기능 구현
+// ==========================================
 const tabs = document.querySelectorAll(".tab");
 const panels = document.querySelectorAll(".panel");
 
@@ -130,7 +123,9 @@ tabs.forEach(function (tab) {
   tab.addEventListener("click", handleTabClick);
 });
 
-// 내 서재 상태 변경 및 기록 (Interactive Status Update)
+// ==========================================
+// 내 서재 상태 변경 및 기록
+// ==========================================
 const statusButtons = document.querySelectorAll(".status-btn");
 const libraryMessage = document.querySelector("#libraryMessage");
 
@@ -139,7 +134,6 @@ function handleStatusChange(event) {
   const statusTextSpan = card.querySelector(".status-text");
   const gameTitle = card.querySelector("h3").textContent;
 
-  // 클래스 토글을 통해 '완결' 상태 시각적 스타일 변경
   const isCompleted = card.classList.toggle("is-completed");
 
   if (isCompleted) {
@@ -158,63 +152,173 @@ statusButtons.forEach(function (button) {
 });
 
 // ==========================================
-// 중간고사 신규 기능: 새 게임 서재 직접 추가 및 통계 연동
+// 9주차: 조건부 입력 영역 제어 (DLC 확장팩 선택)
 // ==========================================
-const addGameButton = document.querySelector("#addGameButton");
+const dlcOption = document.querySelector("#dlc-option");
+const dlcOptions = document.querySelector("#dlc-options");
+const dlcStepInputs = [...document.querySelectorAll('input[name="dlc_step"]')];
+
+function syncDlcFields() {
+  const open = dlcOption.checked;
+  dlcOption.setAttribute("aria-expanded", String(open));
+  dlcOptions.hidden = !open;
+  dlcStepInputs.forEach((input) => {
+    input.disabled = !open;
+  });
+}
+
+if (dlcOption) {
+  dlcOption.addEventListener("change", syncDlcFields);
+  syncDlcFields();
+}
+
+// ==========================================
+// 9주차: 입력 경험 & 실시간 글자 수 / 상태 갱신 및 검증
+// ==========================================
+const titleField = document.querySelector("#title-field");
 const newGameTitleInput = document.querySelector("#newGameTitle");
-const newGameGenreInput = document.querySelector("#newGameGenre");
-const featuresList = document.querySelector(".features-list");
+const titleHelp = document.querySelector("#title-help");
+const titleCount = document.querySelector("#title-count");
+const titleError = document.querySelector("#title-error");
+const addGameForm = document.querySelector("#addGameForm");
 const addGameMessage = document.querySelector("#addGameMessage");
+const submitStatus = document.querySelector("#submit-status");
+const addGameButton = document.querySelector("#addGameButton");
 const totalGamesStat = document.querySelector(
   "#stats .stat-card:nth-child(1) strong",
 );
+const featuresList = document.querySelector(".features-list");
 
-// 현재 보유 게임 개수 카운트 (기본 124개에서 시작)
+// URL 파라미터로 ?save-error=1 주면 강제 저장 실패
+const forceSaveFailure = new URLSearchParams(location.search).has("save-error");
 let totalGameCount = 124;
 
-function handleAddGame() {
-  const titleValue = newGameTitleInput.value.trim();
-  const genreValue = newGameGenreInput.value.trim();
+function updateTitleExperience() {
+  const length = newGameTitleInput.value.length;
+  const enough = newGameTitleInput.value.trim().length >= 2;
+  const invalid = newGameTitleInput.getAttribute("aria-invalid") === "true";
 
-  // 1. 유효성 검사 (입력값이 비어있는 경우)
-  if (titleValue === "") {
-    alert("등록할 게임 제목을 입력해 주세요.");
-    newGameTitleInput.focus();
-    return;
+  titleCount.textContent = `${length} / 30자`;
+  titleField.classList.toggle("is-valid", enough && !invalid);
+
+  if (!invalid) {
+    titleHelp.textContent = enough
+      ? "입력 조건을 충족했습니다."
+      : "구분할 수 있도록 2자 이상 입력해 주세요.";
   }
-
-  const genreDisplay = genreValue === "" ? "기타 / 인디" : genreValue;
-
-  // 2. 새로운 게임 카드 요소(li) 생성
-  const newCard = document.createElement("li");
-  newCard.className = "feature-card";
-  newCard.innerHTML = `
-    <h3>${titleValue}</h3>
-    <p>장르: ${genreDisplay}</p>
-    <p class="status">상태: <span class="status-text">플레이 중</span></p>
-    <button type="button" class="status-btn">상태 변경 (완결)</button>
-  `;
-
-  // 3. 새로 생성된 버튼에 기존 상태 변경 이벤트 연결
-  const newStatusBtn = newCard.querySelector(".status-btn");
-  newStatusBtn.addEventListener("click", handleStatusChange);
-
-  // 4. 서재 목록(featuresList)의 맨 앞에 추가
-  featuresList.prepend(newCard);
-
-  // 5. 통계 숫자 실시간 갱신 (+1)
-  totalGameCount++;
-  totalGamesStat.textContent = totalGameCount + "개";
-
-  // 6. 성공 피드백 메시지 출력 및 입력창 초기화
-  addGameMessage.textContent = `'${titleValue}' 게임이 성공적으로 서재에 등록되었습니다!`;
-  addGameMessage.classList.add("is-success");
-
-  newGameTitleInput.value = "";
-  newGameGenreInput.value = "";
-  newGameTitleInput.focus();
 }
 
-if (addGameButton) {
-  addGameButton.addEventListener("click", handleAddGame);
+if (newGameTitleInput) {
+  newGameTitleInput.addEventListener("input", () => {
+    updateTitleExperience();
+    if (newGameTitleInput.getAttribute("aria-invalid") === "true") {
+      validateTitle();
+    }
+  });
+}
+
+function showTitleError(message) {
+  newGameTitleInput.setAttribute("aria-invalid", "true");
+  titleError.textContent = message;
+  titleField.classList.remove("is-valid");
+  titleField.classList.add("has-error");
+  return false;
+}
+
+function clearTitleError() {
+  newGameTitleInput.removeAttribute("aria-invalid");
+  titleError.textContent = "";
+  titleField.classList.remove("has-error");
+  updateTitleExperience();
+}
+
+function validateTitle() {
+  const title = newGameTitleInput.value.trim();
+
+  if (!title) {
+    return showTitleError("게임 제목을 입력해 주세요.");
+  }
+
+  if (title.length < 2) {
+    return showTitleError("게임 제목을 2자 이상 입력해 주세요.");
+  }
+
+  clearTitleError();
+  return true;
+}
+
+function setSubmitState(loading, message) {
+  addGameForm.setAttribute("aria-busy", String(loading));
+  addGameButton.disabled = loading;
+  addGameButton.textContent = loading
+    ? "서재에 등록하는 중…"
+    : "서재에 추가하기";
+  submitStatus.textContent = message;
+}
+
+function wait(milliseconds) {
+  return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+}
+
+// ==========================================
+// 9주차: 통합 Submit 이벤트 (검증 -> 비동기 저장 -> 결과/에러 핸들링)
+// ==========================================
+if (addGameForm) {
+  addGameForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!validateTitle()) {
+      window.requestAnimationFrame(() => {
+        addGameForm.querySelector('[aria-invalid="true"]')?.focus();
+      });
+      return;
+    }
+
+    const titleValue = newGameTitleInput.value.trim();
+    const genreValue = document.querySelector("#newGameGenre").value.trim();
+    const genreDisplay = genreValue === "" ? "기타 / 인디" : genreValue;
+
+    setSubmitState(true, "서재 데이터베이스에 등록하고 있습니다.");
+
+    try {
+      await wait(600);
+      if (forceSaveFailure) {
+        throw new Error("서버 저장 실패 시뮬레이션");
+      }
+
+      const newCard = document.createElement("li");
+      newCard.className = "feature-card";
+      newCard.innerHTML = `
+        <h3>${titleValue}</h3>
+        <p>장르: ${genreDisplay}</p>
+        <p class="status">상태: <span class="status-text">플레이 중</span></p>
+        <button type="button" class="status-btn">상태 변경 (완결)</button>
+      `;
+
+      const newStatusBtn = newCard.querySelector(".status-btn");
+      newStatusBtn.addEventListener("click", handleStatusChange);
+
+      if (featuresList) {
+        featuresList.prepend(newCard);
+      }
+
+      if (totalGamesStat) {
+        totalGameCount++;
+        totalGamesStat.textContent = totalGameCount + "개";
+      }
+
+      setSubmitState(
+        false,
+        `'${titleValue}' 게임이 성공적으로 등록되었습니다!`,
+      );
+      addGameForm.reset();
+      syncDlcFields();
+      updateTitleExperience();
+    } catch (error) {
+      setSubmitState(
+        false,
+        "저장하지 못했습니다. 입력한 내용은 그대로 두었습니다. 다시 시도해 주세요.",
+      );
+    }
+  });
 }
