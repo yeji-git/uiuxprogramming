@@ -2,9 +2,18 @@
   box-sizing: border-box;
 }
 
+:root {
+  --blue: #5b50c8;
+  --lavender: #ebe9ff;
+  --ink: #292a31;
+  --muted: #5e6272;
+  --line: #deddea;
+  --surface: #ffffff;
+}
+
 body {
   margin: 0;
-  color: #292a31;
+  color: var(--ink);
   font-family: "Noto Sans KR", Arial, sans-serif;
   line-height: 1.6;
   background-color: #f6f6fb;
@@ -20,6 +29,87 @@ img {
   height: auto;
 }
 
+/* 10주차: 상단 내비게이션 바 스타일 */
+.main-nav {
+  margin-left: auto;
+}
+
+.main-nav ul {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.main-nav a {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.main-nav a:hover {
+  color: var(--blue);
+}
+
+/* 현재 활성화된 메뉴 강조 스타일 */
+.main-nav a.is-current {
+  color: var(--blue);
+  background: var(--lavender);
+  box-shadow: inset 0 -3px 0 var(--blue);
+}
+
+/* 10주차: 모바일 메뉴 토글 버튼 스타일 (기본은 숨김) */
+.menu-toggle {
+  display: none;
+  min-height: 40px;
+  margin-left: auto;
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* 10주차: 서재 상태 필터 버튼 스타일 */
+.plan-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.filter-button {
+  min-height: 42px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.filter-button.is-active {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: #fff;
+}
+
 #interaction-practice {
   margin-top: 56px;
 }
@@ -27,9 +117,9 @@ img {
 .interaction-item {
   margin-top: 20px;
   padding: 24px;
-  border: 1px solid #deddea;
+  border: 1px solid var(--line);
   border-radius: 12px;
-  background-color: #ffffff;
+  background-color: var(--surface);
 }
 
 .interaction-item label:not(.agree-row) {
@@ -105,7 +195,7 @@ header {
 
 .eyebrow {
   margin: 0 0 8px;
-  color: #5b50c8;
+  color: var(--blue);
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -136,29 +226,8 @@ h3 {
 
 .header-description {
   margin-bottom: 28px;
-  color: #5e6272;
+  color: var(--muted);
   font-size: 18px;
-}
-
-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  margin-top: 24px;
-}
-
-nav a {
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-weight: 700;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
-}
-
-nav a:hover {
-  color: #4038a5;
-  background-color: #ebe9ff;
 }
 
 /* 섹션 레이아웃 */
@@ -167,7 +236,7 @@ section {
   padding: 40px;
   border: 1px solid #e0e1ec;
   border-radius: 18px;
-  background-color: #ffffff;
+  background-color: var(--surface);
 }
 
 .about-layout {
@@ -204,7 +273,7 @@ section {
   min-width: 0;
   padding: 20px 24px;
   margin-bottom: 0;
-  border: 1px solid #deddea;
+  border: 1px solid var(--line);
   border-radius: 12px;
   background-color: #f4f3ff;
   transition:
@@ -216,20 +285,20 @@ section {
   display: block;
   margin-top: 6px;
   font-size: 28px;
-  color: #5b50c8;
+  color: var(--blue);
 }
 
 /* 서재 상태 변경 스타일 */
 #libraryMessage {
   margin-bottom: 16px;
-  color: #5b50c8;
+  color: var(--blue);
   font-weight: 700;
 }
 
 .status-btn {
   margin-top: 12px;
   padding: 6px 12px;
-  background-color: #5b50c8;
+  background-color: var(--blue);
   color: #ffffff;
   border: none;
   border-radius: 6px;
@@ -276,7 +345,7 @@ button {
   border: 0;
   color: #ffffff;
   font-weight: 700;
-  background-color: #5b50c8;
+  background-color: var(--blue);
   cursor: pointer;
 }
 
@@ -344,8 +413,8 @@ body.dark .feature-card.is-completed .status span {
 .tab {
   padding: 12px 20px;
   color: #5b5870;
-  background-color: #ffffff;
-  border: 1px solid #deddea;
+  background-color: var(--surface);
+  border: 1px solid var(--line);
   border-radius: 8px;
   cursor: pointer;
   font-weight: 700;
@@ -363,14 +432,14 @@ body.dark .feature-card.is-completed .status span {
 
 .tab.is-active {
   color: #635bff;
-  background-color: #ffffff;
+  background-color: var(--surface);
   border-color: #635bff;
   border-bottom: 4px solid currentColor;
 }
 
 .panel {
   padding: 24px;
-  border: 1px solid #deddea;
+  border: 1px solid var(--line);
   border-radius: 12px;
   background-color: #f4f3ff;
 }
@@ -379,34 +448,11 @@ body.dark .feature-card.is-completed .status span {
   display: none;
 }
 
-body.dark .tab {
-  color: #d8d8e2;
-  background-color: #2d2e38;
-  border-color: #50515f;
-}
-
-body.dark .tab:hover {
-  color: #ffffff;
-  background-color: #5b50c8;
-  border-color: #5b50c8;
-}
-
-body.dark .tab.is-active {
-  color: #9d95ff;
-  background-color: #20212a;
-  border-color: #9d95ff;
-}
-
-body.dark .panel {
-  border-color: #50515f;
-  background-color: #2d2e38;
-}
-
 /* 게임 직접 추가 섹션 스타일 */
 #add-game-section {
   margin-top: 40px;
   background-color: #fcfcff;
-  border: 2px dashed #5b50c8;
+  border: 2px dashed var(--blue);
 }
 
 #addGameForm {
@@ -418,7 +464,7 @@ body.dark .panel {
 }
 
 #addGameMessage {
-  color: #5b50c8;
+  color: var(--blue);
   font-weight: 700;
   margin-bottom: 8px;
 }
@@ -461,8 +507,8 @@ body.dark .panel {
   pointer-events: none;
 }
 
-/* 768px 미디어 쿼리 */
-@media (max-width: 768px) {
+/* 10주차: 600px 이하 모바일 화면 미디어 쿼리 (햄버거 메뉴 전환) */
+@media (max-width: 600px) {
   body {
     font-size: 16px;
   }
@@ -472,13 +518,45 @@ body.dark .panel {
     padding-bottom: 24px;
   }
 
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .site-header .main-nav {
+    display: none;
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .site-header .main-nav.is-open {
+    display: block;
+  }
+
+  .main-nav ul {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding-top: 10px;
+  }
+
+  .main-nav a {
+    display: block;
+    min-height: 44px;
+    padding: 10px 12px;
+    border-radius: 9px;
+    font-size: 14px;
+  }
+
   section {
     margin-top: 40px;
     padding: 24px;
   }
 
   h1 {
-    font-size: 36px;
+    font-size: 32px;
   }
 
   h2 {
@@ -493,16 +571,6 @@ body.dark .panel {
   .recommend-preview {
     width: 100%;
     max-width: 100%;
-  }
-
-  nav {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-  }
-
-  nav a {
-    padding: 8px 0;
   }
 
   .features-list,

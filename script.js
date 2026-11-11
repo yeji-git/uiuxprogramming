@@ -124,35 +124,176 @@ tabs.forEach(function (tab) {
 });
 
 // ==========================================
-// 내 서재 상태 변경 및 기록
+// 10주차: 내비게이션 현재 위치 표시 기능
 // ==========================================
-const statusButtons = document.querySelectorAll(".status-btn");
-const libraryMessage = document.querySelector("#libraryMessage");
+const navLinks = document.querySelectorAll(".main-nav a");
+const menuToggle = document.querySelector("#menu-toggle");
+const mainNav = document.querySelector("#main-nav");
 
-function handleStatusChange(event) {
-  const card = event.currentTarget.closest(".feature-card");
-  const statusTextSpan = card.querySelector(".status-text");
-  const gameTitle = card.querySelector("h3").textContent;
+function updateCurrentNav() {
+  const currentHash = window.location.hash;
 
-  const isCompleted = card.classList.toggle("is-completed");
+  navLinks.forEach((link) => {
+    const current = currentHash
+      ? link.getAttribute("href") === currentHash
+      : link === navLinks[0];
 
-  if (isCompleted) {
-    statusTextSpan.textContent = "완결";
-    event.currentTarget.textContent = "상태 변경 (플레이 중)";
-    libraryMessage.textContent = `'${gameTitle}' 게임이 [완결] 상태로 업데이트되었습니다!`;
-  } else {
-    statusTextSpan.textContent = "플레이 중";
-    event.currentTarget.textContent = "상태 변경 (완결)";
-    libraryMessage.textContent = `'${gameTitle}' 게임이 [플레이 중] 상태로 변경되었습니다.`;
-  }
+    link.classList.toggle("is-current", current);
+
+    if (current) {
+      link.setAttribute("aria-current", "page");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  });
 }
 
-statusButtons.forEach(function (button) {
-  button.addEventListener("click", handleStatusChange);
+window.addEventListener("hashchange", updateCurrentNav);
+updateCurrentNav();
+
+// 모바일 메뉴 열고 닫기 이벤트
+if (menuToggle && mainNav) {
+  menuToggle.addEventListener("click", () => {
+    const isOpen = mainNav.classList.toggle("is-open");
+    menuToggle.textContent = isOpen ? "메뉴 닫기" : "메뉴 열기";
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  // 메뉴 링크를 누르면 모바일 메뉴가 자동으로 닫히도록 처리
+  navLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      mainNav.classList.remove("is-open");
+      menuToggle.textContent = "메뉴 열기";
+      menuToggle.setAttribute("aria-expanded", "false");
+    });
+  });
+}
+
+// ==========================================
+// 10주차: 서재 목록 상태 필터링 기능 (전체 / 플레이 중 / 완결)
+// ==========================================
+const filterButtons = document.querySelectorAll(".filter-button");
+let currentFilter = "all"; // 'all', 'active'(플레이 중), 'completed'(완결)
+
+// 게임 리스트 관리를 위한 동적 배열 (기본 카드들로부터 초기화)
+let dynamicGames = [
+  {
+    id: "1",
+    title: "스타듀 밸리",
+    genre: "시뮬레이션 / 인디",
+    status: "active",
+    completed: false,
+  },
+  {
+    id: "2",
+    title: "하데스",
+    genre: "액션 / 로그라이크",
+    status: "completed",
+    completed: true,
+  },
+  {
+    id: "3",
+    title: "발더스 게이트 3",
+    genre: "RPG",
+    status: "active",
+    completed: false,
+  },
+];
+
+const planList = document.querySelector("#plan-list");
+const emptyState = document.querySelector("#empty-state");
+const planCount = document.querySelector("#plan-count");
+const libraryMessage = document.querySelector("#libraryMessage");
+
+function getVisibleGames() {
+  return dynamicGames.filter((game) => {
+    if (currentFilter === "all") return true;
+    if (currentFilter === "completed") return game.completed;
+    return !game.completed; // active (플레이 중)
+  });
+}
+
+function renderPlans() {
+  const visibleGames = getVisibleGames();
+
+  if (planList) {
+    planList.replaceChildren();
+  }
+
+  if (emptyState) {
+    emptyState.hidden = visibleGames.length !== 0;
+  }
+  if (planList) {
+    planList.hidden = visibleGames.length === 0;
+  }
+
+  if (visibleGames.length === 0 && emptyState) {
+    const filtered = currentFilter !== "all";
+    const emptyTitle = emptyState.querySelector("h3");
+    const emptyDescription = emptyState.querySelector("p");
+    const emptyAction = emptyState.querySelector("a");
+
+    emptyTitle.textContent = filtered
+      ? "선택한 상태의 게임이 없어요."
+      : "아직 저장한 게임이 없어요.";
+    emptyDescription.textContent = filtered
+      ? "다른 상태를 선택해 보세요."
+      : "새 게임을 직접 추가해 이곳에서 관리해 보세요.";
+    if (emptyAction) emptyAction.hidden = filtered;
+  }
+
+  if (planCount) {
+    planCount.textContent = String(visibleGames.length);
+    planCount.setAttribute(
+      "aria-label",
+      `현재 표시 중인 게임 ${visibleGames.length}개`,
+    );
+  }
+
+  visibleGames.forEach((game) => {
+    const li = document.createElement("li");
+    li.className = `feature-card ${game.completed ? "is-completed" : ""}`;
+    li.innerHTML = `
+      <h3>${game.title}</h3>
+      <p>장르: ${game.genre}</p>
+      <p class="status">상태: <span class="status-text">${game.completed ? "완결" : "플레이 중"}</span></p>
+      <button type="button" class="status-btn">상태 변경 (${game.completed ? "플레이 중" : "완결"})</button>
+    `;
+
+    // 상태 변경 버튼 이벤트 연결
+    const btn = li.querySelector(".status-btn");
+    btn.addEventListener("click", () => {
+      game.completed = !game.completed;
+      game.status = game.completed ? "completed" : "active";
+      renderPlans();
+      if (libraryMessage) {
+        libraryMessage.textContent = `'${game.title}' 게임이 [${game.completed ? "완결" : "플레이 중"}] 상태로 업데이트되었습니다!`;
+      }
+    });
+
+    if (planList) {
+      planList.appendChild(li);
+    }
+  });
+}
+
+// 필터 버튼 클릭 이벤트 연결
+filterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    currentFilter = button.dataset.filter;
+
+    filterButtons.forEach((item) => {
+      const selected = item === button;
+      item.classList.toggle("is-active", selected);
+      item.setAttribute("aria-pressed", String(selected));
+    });
+
+    renderPlans();
+  });
 });
 
 // ==========================================
-// 9주차: 조건부 입력 영역 제어 (DLC 확장팩 선택)
+// 9주차/10주차: 조건부 입력 및 새 게임 서재 직접 추가
 // ==========================================
 const dlcOption = document.querySelector("#dlc-option");
 const dlcOptions = document.querySelector("#dlc-options");
@@ -160,8 +301,8 @@ const dlcStepInputs = [...document.querySelectorAll('input[name="dlc_step"]')];
 
 function syncDlcFields() {
   const open = dlcOption.checked;
-  dlcOption.setAttribute("aria-expanded", String(open));
-  dlcOptions.hidden = !open;
+  if (dlcOption) dlcOption.setAttribute("aria-expanded", String(open));
+  if (dlcOptions) dlcOptions.hidden = !open;
   dlcStepInputs.forEach((input) => {
     input.disabled = !open;
   });
@@ -172,36 +313,31 @@ if (dlcOption) {
   syncDlcFields();
 }
 
-// ==========================================
-// 9주차: 입력 경험 & 실시간 글자 수 / 상태 갱신 및 검증
-// ==========================================
 const titleField = document.querySelector("#title-field");
 const newGameTitleInput = document.querySelector("#newGameTitle");
 const titleHelp = document.querySelector("#title-help");
 const titleCount = document.querySelector("#title-count");
 const titleError = document.querySelector("#title-error");
 const addGameForm = document.querySelector("#addGameForm");
-const addGameMessage = document.querySelector("#addGameMessage");
 const submitStatus = document.querySelector("#submit-status");
 const addGameButton = document.querySelector("#addGameButton");
 const totalGamesStat = document.querySelector(
   "#stats .stat-card:nth-child(1) strong",
 );
-const featuresList = document.querySelector(".features-list");
 
-// URL 파라미터로 ?save-error=1 주면 강제 저장 실패
 const forceSaveFailure = new URLSearchParams(location.search).has("save-error");
 let totalGameCount = 124;
 
 function updateTitleExperience() {
+  if (!newGameTitleInput) return;
   const length = newGameTitleInput.value.length;
   const enough = newGameTitleInput.value.trim().length >= 2;
   const invalid = newGameTitleInput.getAttribute("aria-invalid") === "true";
 
-  titleCount.textContent = `${length} / 30자`;
-  titleField.classList.toggle("is-valid", enough && !invalid);
+  if (titleCount) titleCount.textContent = `${length} / 30자`;
+  if (titleField) titleField.classList.toggle("is-valid", enough && !invalid);
 
-  if (!invalid) {
+  if (!invalid && titleHelp) {
     titleHelp.textContent = enough
       ? "입력 조건을 충족했습니다."
       : "구분할 수 있도록 2자 이상 입력해 주세요.";
@@ -219,50 +355,48 @@ if (newGameTitleInput) {
 
 function showTitleError(message) {
   newGameTitleInput.setAttribute("aria-invalid", "true");
-  titleError.textContent = message;
-  titleField.classList.remove("is-valid");
-  titleField.classList.add("has-error");
+  if (titleError) titleError.textContent = message;
+  if (titleField) {
+    titleField.classList.remove("is-valid");
+    titleField.classList.add("has-error");
+  }
   return false;
 }
 
 function clearTitleError() {
   newGameTitleInput.removeAttribute("aria-invalid");
-  titleError.textContent = "";
-  titleField.classList.remove("has-error");
+  if (titleError) titleError.textContent = "";
+  if (titleField) titleField.classList.remove("has-error");
   updateTitleExperience();
 }
 
 function validateTitle() {
   const title = newGameTitleInput.value.trim();
-
   if (!title) {
     return showTitleError("게임 제목을 입력해 주세요.");
   }
-
   if (title.length < 2) {
     return showTitleError("게임 제목을 2자 이상 입력해 주세요.");
   }
-
   clearTitleError();
   return true;
 }
 
 function setSubmitState(loading, message) {
-  addGameForm.setAttribute("aria-busy", String(loading));
-  addGameButton.disabled = loading;
-  addGameButton.textContent = loading
-    ? "서재에 등록하는 중…"
-    : "서재에 추가하기";
-  submitStatus.textContent = message;
+  if (addGameForm) addGameForm.setAttribute("aria-busy", String(loading));
+  if (addGameButton) {
+    addGameButton.disabled = loading;
+    addGameButton.textContent = loading
+      ? "서재에 등록하는 중…"
+      : "서재에 추가하기";
+  }
+  if (submitStatus) submitStatus.textContent = message;
 }
 
 function wait(milliseconds) {
   return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 }
 
-// ==========================================
-// 9주차: 통합 Submit 이벤트 (검증 -> 비동기 저장 -> 결과/에러 핸들링)
-// ==========================================
 if (addGameForm) {
   addGameForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -286,21 +420,16 @@ if (addGameForm) {
         throw new Error("서버 저장 실패 시뮬레이션");
       }
 
-      const newCard = document.createElement("li");
-      newCard.className = "feature-card";
-      newCard.innerHTML = `
-        <h3>${titleValue}</h3>
-        <p>장르: ${genreDisplay}</p>
-        <p class="status">상태: <span class="status-text">플레이 중</span></p>
-        <button type="button" class="status-btn">상태 변경 (완결)</button>
-      `;
+      // 새 게임 데이터 배열에 추가 후 렌더링 갱신
+      dynamicGames.unshift({
+        id: `${Date.now()}`,
+        title: titleValue,
+        genre: genreDisplay,
+        status: "active",
+        completed: false,
+      });
 
-      const newStatusBtn = newCard.querySelector(".status-btn");
-      newStatusBtn.addEventListener("click", handleStatusChange);
-
-      if (featuresList) {
-        featuresList.prepend(newCard);
-      }
+      renderPlans();
 
       if (totalGamesStat) {
         totalGameCount++;
@@ -322,3 +451,6 @@ if (addGameForm) {
     }
   });
 }
+
+// 최초 로드 시 서재 목록 렌더링 실행
+renderPlans();

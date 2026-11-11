@@ -14,21 +14,51 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <header>
-      <p class="eyebrow">STEAM GAME COLLECTOR</p>
-      <h1>게임 수집가</h1>
-      <p class="header-description">
+    <header class="site-header">
+      <div
+        class="container header-inner"
+        style="
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          width: 100%;
+          max-width: 1100px;
+          margin: 0 auto;
+        "
+      >
+        <div>
+          <p class="eyebrow" style="margin: 0 0 4px">STEAM GAME COLLECTOR</p>
+          <h1 style="margin: 0; font-size: 32px">게임 수집가</h1>
+        </div>
+
+        <!-- 10주차: 모바일 메뉴 토글 버튼 및 상단 메인 내비게이션 -->
+        <button
+          id="menu-toggle"
+          class="menu-toggle"
+          type="button"
+          aria-controls="main-nav"
+          aria-expanded="false"
+        >
+          메뉴 열기
+        </button>
+
+        <nav id="main-nav" class="main-nav" aria-label="주요 메뉴">
+          <ul>
+            <li><a href="#recommend">오늘의 추천</a></li>
+            <li><a href="#stats">서재 현황</a></li>
+            <li><a href="#library">내 게임 서재</a></li>
+            <li><a href="#add-game-section">게임 추가</a></li>
+            <li><a href="#features">주요 기능</a></li>
+            <li><a href="#subscribe">소식 받기</a></li>
+          </ul>
+        </nav>
+      </div>
+      <p
+        class="header-description"
+        style="max-width: 1100px; margin: 16px auto 0; padding: 0 24px"
+      >
         당신의 취향에 맞는 스팀 게임을 추천하고 서재를 관리해 드립니다.
       </p>
-
-      <nav aria-label="주요 메뉴">
-        <a href="#recommend">오늘의 추천</a>
-        <a href="#stats">서재 현황</a>
-        <a href="#library">내 게임 서재</a>
-        <a href="#add-game-section">게임 직접 추가</a>
-        <a href="#features">주요 기능</a>
-        <a href="#subscribe">소식 받기</a>
-      </nav>
     </header>
 
     <main>
@@ -92,14 +122,71 @@
         </ul>
       </section>
 
-      <!-- 3. 내 게임 서재 섹션 -->
+      <!-- 3. 내 게임 서재 섹션 (10주차 필터 추가) -->
       <section id="library">
         <h2>내 게임 서재</h2>
+
+        <!-- 10주차 -->
+        <div class="plan-filters" role="group" aria-label="게임 서재 표시 범위">
+          <button
+            class="filter-button is-active"
+            type="button"
+            data-filter="all"
+            aria-pressed="true"
+          >
+            전체
+          </button>
+          <button
+            class="filter-button"
+            type="button"
+            data-filter="active"
+            aria-pressed="false"
+          >
+            플레이 중
+          </button>
+          <button
+            class="filter-button"
+            type="button"
+            data-filter="completed"
+            aria-pressed="false"
+          >
+            완결
+          </button>
+        </div>
+
         <p id="libraryMessage" aria-live="polite">
-          카드의 상태 변경 버튼을 눌러 플레이 기록을 업데이트해 보세요.
+          카드의 상태 변경 버튼을 눌러 플레이 기록을 업데이트해 보세요. (<span
+            id="plan-count"
+            aria-label="현재 표시 중인 게임 3개"
+            >3</span
+          >개 표시 중)
         </p>
-        <ul class="features-list">
-          <li class="feature-card">
+
+        <!-- 결과 없음 안내 상태 영역 -->
+        <div
+          id="empty-state"
+          hidden
+          style="
+            padding: 30px;
+            text-align: center;
+            background: #f9f9fb;
+            border-radius: 12px;
+            margin-bottom: 20px;
+          "
+        >
+          <h3 style="margin-bottom: 8px">선택한 상태의 게임이 없어요.</h3>
+          <p style="color: #747786; margin-bottom: 16px">
+            다른 상태를 선택해 보세요.
+          </p>
+          <a
+            href="#add-game-section"
+            style="color: #5b50c8; font-weight: 750; text-decoration: underline"
+            >새 게임 직접 추가하러 가기</a
+          >
+        </div>
+
+        <ul class="features-list" id="plan-list">
+          <li class="feature-card" data-status="active">
             <h3>스타듀 밸리</h3>
             <p>장르: 시뮬레이션 / 인디</p>
             <p class="status">
@@ -107,7 +194,7 @@
             </p>
             <button type="button" class="status-btn">상태 변경 (완결)</button>
           </li>
-          <li class="feature-card is-completed">
+          <li class="feature-card is-completed" data-status="completed">
             <h3>하데스</h3>
             <p>장르: 액션 / 로그라이크</p>
             <p class="status">상태: <span class="status-text">완결</span></p>
@@ -115,7 +202,7 @@
               상태 변경 (플레이 중)
             </button>
           </li>
-          <li class="feature-card">
+          <li class="feature-card" data-status="active">
             <h3>발더스 게이트 3</h3>
             <p>장르: RPG</p>
             <p class="status">
@@ -126,7 +213,7 @@
         </ul>
       </section>
 
-      <!-- 새 게임 서재 직접 추가 (9주차 폼 UI 및 검증 구조 반영) -->
+      <!-- 새 게임 서재 직접 추가 (9~10주차 폼 UI 반영) -->
       <section id="add-game-section">
         <h2>내 서재에 게임 직접 추가하기</h2>
         <p id="addGameMessage">
@@ -134,7 +221,6 @@
         </p>
 
         <form id="addGameForm" novalidate aria-busy="false">
-          <!-- 게임 제목 필드 (오류 및 글자 수 연결) -->
           <div
             class="field"
             id="title-field"
@@ -161,7 +247,6 @@
             <p id="title-error" class="field-error" role="alert"></p>
           </div>
 
-          <!-- 장르 입력 필드 -->
           <div
             style="display: flex; flex-direction: column; gap: 8px; width: 100%"
           >
@@ -175,7 +260,6 @@
             />
           </div>
 
-          <!-- 조건부 입력 체크박스 (9주차) -->
           <div class="field qna-field" style="width: 100%">
             <label class="check-row" for="dlc-option">
               <input
